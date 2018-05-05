@@ -67,22 +67,31 @@ mode <- function(numberList){
             mode <- i
             k <- occurences
             if(debug){
-                print(paste("New mode identified:",mode, "occurred:",occurences))
+                print(paste("New mode identified:", mode, "occurred:", occurences))
             }
         }
     }
     if((mode == numberList[1]) && (k==1)){
         return("No mode")
     } else {
-        return(mode)
+        print(paste("Mode:",mode, "occurred", occurences, "times"))
     }
+}
 
+average <- function(numberList){
+    count <- 1
+    total <- 0
+    for(i in numberList){
+        total <- total + i
+        count <- count + 1
+    }
+    print(paste("Average is:", total/count))
 }
 
 #Execution configuration
 #Used to turn ON or OFF extract print statements for debugging.
 debug <- FALSE
-debug <- TRUE
+#debug <- TRUE
 #Number of random digits to generate
 numberOfDigits <- 100
 #Maximum value of the generated digits
@@ -90,10 +99,11 @@ maxValue <- 50
 
 
 inputList <- round(runif(numberOfDigits,0,maxValue), 0)
-cat("The class of var_x is ",class(inputList),"\n")
-print ( inputList )
+if(debug){
+    print ( inputList )
+}
 
 lowestValue(inputList)
 highestValue(inputList)
-
-print(paste("Mode:",mode(inputList)))
+mode(inputList)
+average(inputList)
