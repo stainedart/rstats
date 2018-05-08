@@ -60,6 +60,7 @@ listContains <- function(value, list){
 mode <- function(numberList){
     #modeCounter <- list()
     k <- 1
+    occurences <- 1
     mode <- numberList[1]
     for(i in numberList) {
         occurences <- listContains(i,numberList)
@@ -71,10 +72,10 @@ mode <- function(numberList){
             }
         }
     }
-    if((mode == numberList[1]) && (k==1)){
-        return("No mode")
+    if(k == 1){
+        print("No mode")
     } else {
-        print(paste("Mode:",mode, "occurred", occurences, "times"))
+        print(paste("Mode:",mode, "occurred", k, "times"))
     }
 }
 
@@ -93,9 +94,9 @@ average <- function(numberList){
 debug <- FALSE
 #debug <- TRUE
 #Number of random digits to generate
-numberOfDigits <- 100
+numberOfDigits <- 500
 #Maximum value of the generated digits
-maxValue <- 50
+maxValue <- 25000
 
 
 inputList <- round(runif(numberOfDigits,0,maxValue), 0)
