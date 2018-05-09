@@ -37,12 +37,17 @@ absoluteValue <- function(number){
 
 #Use to find the square root of a given number
 squareRoot <- function(root) {
+    if(debug) {
+        print("Starting the square root calculation")
+    }
     x1 <- (root * 1.0) / 2;
     x2 <- (x1 + (root / x1)) / 2;
     while(absoluteValue(x1 - x2) >= 0.0000001) {
         x1 = x2
         x2 = (x1 + (root / x1)) / 2
-        print(x2)
+        if(debug) {
+            print(paste("Square root approximation",x2))
+        }
     }
     return(x2)
 }
@@ -80,13 +85,14 @@ mode <- function(numberList){
 }
 
 average <- function(numberList){
-    count <- 1
+    count <- 0
     total <- 0
     for(i in numberList){
         total <- total + i
         count <- count + 1
     }
     print(paste("Average is:", total/count))
+    return <- total / count
 }
 
 sortBasic <- function(numberList){
@@ -144,10 +150,31 @@ medianValue <- function(numberList) {
     }
 }
 
+standardDeviation <- function(numberList) {
+    if(debug) {
+        print("Calculating the standard deviation")
+    }
+    average <- average(numberList)
+    upperSum <- 0
+    for(i in numberList) {
+        upperSum <- (i - average)^2
+    }
+    denominator <- length(numberList) #- 1
+    if(debug) {
+        print(paste("Upper sum squared", upperSum))
+        print(paste("Denominator", denominator))
+    }
+    variance <- upperSum / denominator
+    if(debug) {
+        print(paste("Variance", variance))
+    }
+    print(paste("Standard deviation", squareRoot(variance)))
+}
+
 #Execution configuration
 #Used to turn ON or OFF extract print statements for debugging.
 debug <- FALSE
-#debug <- TRUE
+debug <- TRUE
 #Number of random digits to generate
 numberOfDigits <- 4
 #Maximum value of the generated digits
@@ -155,6 +182,7 @@ maxValue <- 25000
 
 
 inputList <- round(runif(numberOfDigits,0,maxValue), 0)
+inputList <- list(1,3,4,7,8)
 if(debug){
     print ( inputList )
 }
@@ -163,3 +191,5 @@ highestValue(inputList)
 mode(inputList)
 average(inputList)
 medianValue(inputList)
+
+standardDeviation(inputList)
