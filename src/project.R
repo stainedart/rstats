@@ -89,12 +89,67 @@ average <- function(numberList){
     print(paste("Average is:", total/count))
 }
 
+sortBasic <- function(numberList){
+    sortedList <- list()
+    outerCounter <- 1
+    for(i in numberList){
+        #sortedList[outerCounter] <- highestValue(numberList)
+        highIndex <- 1
+        high <- numberList[highIndex]
+        innerCounter <- 1
+        for(m in numberList) {
+            if(m > high){
+                if(debug){
+                    print(paste(m,"is higher than",high))
+                }
+                high <- m
+                highIndex <- innerCounter
+            }
+            innerCounter <- innerCounter + 1
+        }
+        sortedList[outerCounter] <- high
+        numberList[highIndex] <- 0
+        outerCounter <- outerCounter + 1
+    }
+    if(debug) {
+        print(sortedList)
+    }
+    return(sortedList)
+}
+
+medianValue <- function(numberList) {
+    #Be careful the list is backwards
+    sortedList <- sortBasic(numberList)
+    listLength <- length(sortedList)
+    if((listLength %% 2) == 1){
+        #odd
+        if(debug){
+            print("odd list length")
+            print(ceiling(listLength / 2))
+        }
+        print(paste("The median is",sortedList[ceiling(listLength / 2)]))
+
+    } else {
+        #even
+        median1 <- listLength / 2
+        median2 <- (listLength / 2) + 1
+        if(debug){
+            print("even list length")
+            print(paste("median 1 position", median1, "median 2 position", median2))
+        }
+        median1 <- unlist(sortedList[median1], use.names=FALSE)
+        median2 <- unlist(sortedList[median2], use.names=FALSE)
+        m <- ((median1[1] + median2[1]) / 2)
+        print(paste("The median is", m))
+    }
+}
+
 #Execution configuration
 #Used to turn ON or OFF extract print statements for debugging.
 debug <- FALSE
 #debug <- TRUE
 #Number of random digits to generate
-numberOfDigits <- 500
+numberOfDigits <- 4
 #Maximum value of the generated digits
 maxValue <- 25000
 
@@ -103,8 +158,8 @@ inputList <- round(runif(numberOfDigits,0,maxValue), 0)
 if(debug){
     print ( inputList )
 }
-
 lowestValue(inputList)
 highestValue(inputList)
 mode(inputList)
 average(inputList)
+medianValue(inputList)
