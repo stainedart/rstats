@@ -157,7 +157,10 @@ standardDeviation <- function(numberList) {
     average <- average(numberList)
     upperSum <- 0
     for(i in numberList) {
-        upperSum <- (i - average)^2
+        if(debug) {
+            print(paste(i,(i - average)^2))
+        }
+        upperSum <- upperSum + (i - average)^2
     }
     denominator <- length(numberList) #- 1
     if(debug) {
@@ -174,22 +177,22 @@ standardDeviation <- function(numberList) {
 #Execution configuration
 #Used to turn ON or OFF extract print statements for debugging.
 debug <- FALSE
-debug <- TRUE
+#debug <- TRUE
 #Number of random digits to generate
-numberOfDigits <- 4
+numberOfDigits <- 50
 #Maximum value of the generated digits
 maxValue <- 25000
 
 
 inputList <- round(runif(numberOfDigits,0,maxValue), 0)
-inputList <- list(1,3,4,7,8)
 if(debug){
     print ( inputList )
 }
 lowestValue(inputList)
 highestValue(inputList)
 mode(inputList)
-average(inputList)
+#calulated during the standard deviation calculation.
+#average(inputList)
 medianValue(inputList)
 
 standardDeviation(inputList)
