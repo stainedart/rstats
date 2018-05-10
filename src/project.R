@@ -179,15 +179,15 @@ standardDeviation <- function(numberList) {
 debug <- FALSE
 #debug <- TRUE
 #Number of random digits to generate
-numberOfDigits <- 50
+numberOfDigits <- 100
 #Maximum value of the generated digits
-maxValue <- 25000
+maxValue <- 100
 
 
 inputList <- round(runif(numberOfDigits,0,maxValue), 0)
-if(debug){
+#if(debug){
     print ( inputList )
-}
+#}
 lowestValue(inputList)
 highestValue(inputList)
 mode(inputList)
