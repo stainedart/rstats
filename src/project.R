@@ -52,6 +52,7 @@ squareRoot <- function(root) {
     return(x2)
 }
 
+#method counting the number of occurences of a given number within a list and returning it.
 listContains <- function(value, list){
     counter <- 0
     for(i in list){
@@ -62,6 +63,7 @@ listContains <- function(value, list){
     return(counter)
 }
 
+#method printing the number that is the most common. If all numbers occur only once no mode is identified.
 mode <- function(numberList){
     #modeCounter <- list()
     k <- 1
@@ -84,6 +86,7 @@ mode <- function(numberList){
     }
 }
 
+#method calculating the average of all the numbers within a given list and returning it.
 average <- function(numberList){
     count <- 0
     total <- 0
@@ -92,9 +95,10 @@ average <- function(numberList){
         count <- count + 1
     }
     print(paste("Average is:", total/count))
-    return <- total / count
+    return(total / count)
 }
 
+#This method will sort backwards the content of the supplied list and return it.
 sortBasic <- function(numberList){
     sortedList <- list()
     outerCounter <- 1
@@ -123,6 +127,7 @@ sortBasic <- function(numberList){
     return(sortedList)
 }
 
+#This method will identify the median and print it. If it is even or odd the calculation is done accordingly.
 medianValue <- function(numberList) {
     #Be careful the list is backwards
     sortedList <- sortBasic(numberList)
@@ -150,6 +155,7 @@ medianValue <- function(numberList) {
     }
 }
 
+#This method calculates the standard deviation of the provided list and prints it.
 standardDeviation <- function(numberList) {
     if(debug) {
         print("Calculating the standard deviation")
@@ -174,25 +180,28 @@ standardDeviation <- function(numberList) {
     print(paste("Standard deviation", squareRoot(variance)))
 }
 
+#=========================
 #Execution configuration
+#=========================
+
 #Used to turn ON or OFF extract print statements for debugging.
 debug <- FALSE
 #debug <- TRUE
+
 #Number of random digits to generate
 numberOfDigits <- 100
+
 #Maximum value of the generated digits
 maxValue <- 100
 
-
+#Random list generator based of the above 2 values.
 inputList <- round(runif(numberOfDigits,0,maxValue), 0)
-#if(debug){
-    print ( inputList )
-#}
+print ( inputList )
+
 lowestValue(inputList)
 highestValue(inputList)
 mode(inputList)
 #calulated during the standard deviation calculation.
 #average(inputList)
 medianValue(inputList)
-
 standardDeviation(inputList)
