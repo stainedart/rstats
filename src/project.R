@@ -1,33 +1,8 @@
-# Function to pring the lowest value of the provided list.
-# lowestValue <- function(a) {
-#    low <- a[1]
-#    for(i in a) {
-#    	 if(i < low){
-#         if(debug){
-#             print(paste(i, "is lower than", low))
-#         }
-#        low <- i
-#      }
-#    }
-#     print(paste("Lowest value:", low))
-# }
-
-# Function to pring the highest value of the provided list.
-# highestValue <- function(a) {
-#     high <- a[1]
-#     for(i in a) {
-#         if(i > high){
-#             if(debug){
-#                 print(paste(i,"is higher than",high))
-#             }
-#             high <- i
-#         }
-#     }
-#     print(paste("Highest value:", high))
-# }
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
 
 #Function returning the absolute value of a given number.
-absoluteValue <- function(number){
+absoluteValue=function(number){
     if(number > 0) {
         return(number)
     } else {
@@ -36,7 +11,7 @@ absoluteValue <- function(number){
 }
 
 #Use to find the square root of a given number
-squareRoot <- function(root) {
+squareRoot = function(root) {
     if(debug) {
         print("Starting the square root calculation")
     }
@@ -61,41 +36,6 @@ listContains <- function(value, list){
         }
     }
     return(counter)
-}
-
-#method printing the number that is the most common. If all numbers occur only once no mode is identified.
-mode <- function(numberList){
-    #modeCounter <- list()
-    k <- 1
-    occurences <- 1
-    mode <- numberList[1]
-    for(i in numberList) {
-        occurences <- listContains(i,numberList)
-        if(occurences > k){
-            mode <- i
-            k <- occurences
-            if(debug){
-                print(paste("New mode identified:", mode, "occurred:", occurences))
-            }
-        }
-    }
-    if(k == 1){
-        print("No mode")
-    } else {
-        print(paste("Mode:",mode, "occurred", k, "times"))
-    }
-}
-
-#method calculating the average of all the numbers within a given list and returning it.
-average <- function(numberList){
-    count <- 0
-    total <- 0
-    for(i in numberList){
-        total <- total + i
-        count <- count + 1
-    }
-    print(paste("Average is:", total/count))
-    return(total / count)
 }
 
 #This method will sort backwards the content of the supplied list and return it.
@@ -129,58 +69,126 @@ sortBasic <- function(numberList){
     return(sortedList)
 }
 
-#This method will identify the median and print it. If it is even or odd the calculation is done accordingly.
-medianValue <- function(numberList) {
-    #Be careful the list is backwards
-    sortedList <- sortBasic(numberList)
-    listLength <- length(sortedList)
-    if((listLength %% 2) == 1){
-        #odd
-        if(debug){
-            print("odd list length")
-            print(ceiling(listLength / 2))
-        }
-        print(paste("The median is",sortedList[ceiling(listLength / 2)]))
+#===========================================================================
+#Statistics class definition followed by method assignment.
+#===========================================================================
+setClass("Statistics", representation(minValue = "numeric", maxValue = "numeric", randomList = "numeric", sortedList = "list"))
 
-    } else {
-        #even
-        median1 <- listLength / 2
-        median2 <- (listLength / 2) + 1
-        if(debug){
-            print("even list length")
-            print(paste("median 1 position", median1, "median 2 position", median2))
-        }
-        median1 <- unlist(sortedList[median1], use.names=FALSE)
-        median2 <- unlist(sortedList[median2], use.names=FALSE)
-        m <- ((median1[1] + median2[1]) / 2)
-        print(paste("The median is", m))
+#Method calculating the average value of the randomList provided in the Statistics object.
+setGeneric(name="average",
+    def=function(theObject)
+    {
+        standardGeneric("average")
     }
-}
+)
+setMethod(f="average", signature="Statistics",
+    definition=function(theObject) {
+        count <- 0
+        total <- 0
+        for(i in theObject@randomList){
+            total <- total + i
+            count <- count + 1
+        }
+        print(paste("Average is:", total/count))
+        return(total / count)
+    }
+)
+
+#method printing the number that is the most common. If all numbers occur only once no mode is identified.
+setGeneric(name="mode",
+    def=function(theObject) {
+        standardGeneric("mode")
+    }
+)
+setMethod(f="mode", signature="Statistics",
+    definition=function(theObject){
+        k <- 1
+        occurences <- 1
+        mode <- theObject@randomList[1]
+        for(i in theObject@randomList) {
+            occurences <- listContains(i,theObject@randomList)
+            if(occurences > k){
+                mode <- i
+                k <- occurences
+                if(debug){
+                    print(paste("New mode identified:", mode, "occurred:", occurences))
+                }
+            }
+        }
+        if(k == 1){
+            print("No mode")
+        } else {
+            print(paste("Mode:",mode, "occurred", k, "times"))
+        }
+    }
+)
+
+#This method will identify the median and print it. If it is even or odd the calculation is done accordingly.
+setGeneric(name="medianValue",
+    def=function(theObject) {
+        standardGeneric("medianValue")
+    }
+)
+setMethod(f="medianValue", signature="Statistics",
+    definition=function(theObject){
+        #Be careful the list is backwards
+        theObject@sortedList <- sortBasic(theObject@randomList)
+        listLength <- length(theObject@sortedList)
+        if((listLength %% 2) == 1){
+            #odd
+            if(debug){
+                print("odd list length")
+                print(ceiling(listLength / 2))
+            }
+            print(paste("The median is",theObject@sortedList[ceiling(listLength / 2)]))
+
+        } else {
+            #even
+            median1 <- listLength / 2
+            median2 <- (listLength / 2) + 1
+            if(debug){
+                print("even list length")
+                print(paste("median 1 position", median1, "median 2 position", median2))
+            }
+            median1 <- unlist(theObject@sortedList[median1], use.names=FALSE)
+            median2 <- unlist(theObject@sortedList[median2], use.names=FALSE)
+            m <- ((median1[1] + median2[1]) / 2)
+            print(paste("The median is", m))
+        }
+    }
+)
 
 #This method calculates the standard deviation of the provided list and prints it.
-standardDeviation <- function(numberList) {
-    if(debug) {
-        print("Calculating the standard deviation")
+setGeneric(name="standardDeviation",
+    def=function(theObject) {
+        standardGeneric("standardDeviation")
     }
-    average <- average(numberList)
-    upperSum <- 0
-    for(i in numberList) {
+)
+setMethod(f="standardDeviation", signature="Statistics",
+    definition=function(theObject){
         if(debug) {
-            print(paste(i,(i - average)^2))
+            print("Calculating the standard deviation")
         }
-        upperSum <- upperSum + (i - average)^2
+        average <- average(theObject)
+        upperSum <- 0
+        for(i in theObject@randomList) {
+            if(debug) {
+                #print(paste(i,(i - average)^2))
+            }
+            upperSum <- upperSum + (i - average)^2
+        }
+        denominator <- length(theObject@randomList) #- 1
+        if(debug) {
+            print(paste("Upper sum squared", upperSum))
+            print(paste("Denominator", denominator))
+        }
+        variance <- upperSum / denominator
+        if(debug) {
+            print(paste("Variance", variance))
+        }
+        print(paste("Standard deviation", squareRoot(variance)))
     }
-    denominator <- length(numberList) #- 1
-    if(debug) {
-        print(paste("Upper sum squared", upperSum))
-        print(paste("Denominator", denominator))
-    }
-    variance <- upperSum / denominator
-    if(debug) {
-        print(paste("Variance", variance))
-    }
-    print(paste("Standard deviation", squareRoot(variance)))
-}
+)
 
 #=========================
 #Execution configuration
@@ -194,16 +202,31 @@ debug <- FALSE
 numberOfDigits <- 100
 
 #Maximum value of the generated digits
-maxValue <- 100
+maxDigitValue <- 100
 
-#Random list generator based of the above 2 values.
-inputList <- round(runif(numberOfDigits,0,maxValue), 0)
-print ( inputList )
 
-#lowestValue(inputList)
-#highestValue(inputList)
-mode(inputList)
-#calulated during the standard deviation calculation.
-#average(inputList)
-medianValue(inputList)
-standardDeviation(inputList)
+#=========================
+#Handling command line arguments
+#=========================
+if (length(args)==0) {
+    stop("Please supply the number of digits to be generated, the maximum value of the digits to be generated and the debug value .n", call.=FALSE)
+} else {
+    numberOfDigits <- as.numeric(args[1])
+    maxDigitValue <- as.numeric(args[2])
+    debug <- as.logical(args[3])
+}
+print(paste("Number of digits:", numberOfDigits))
+print(paste("Maximum value of digits:", maxDigitValue))
+print(paste("Debug Value:", debug))
+
+
+#=========================
+#Creating a Statistics instance and calculating the DESCRIPTIVE_STATISTICS
+#=========================
+stats <- new("Statistics")
+stats@randomList <- round(runif(numberOfDigits,0,maxDigitValue), 0)
+# calulated during the standard deviation calculation.
+# average(stats)
+mode(stats)
+medianValue(stats)
+standardDeviation(stats)
