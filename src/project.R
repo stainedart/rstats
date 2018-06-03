@@ -172,9 +172,6 @@ setMethod(f="standardDeviation", signature="Statistics",
         average <- average(theObject)
         upperSum <- 0
         for(i in theObject@randomList) {
-            if(debug) {
-                #print(paste(i,(i - average)^2))
-            }
             upperSum <- upperSum + (i - average)^2
         }
         denominator <- length(theObject@randomList) #- 1
