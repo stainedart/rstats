@@ -64,7 +64,7 @@ sortBasic <- function(numberList){
     if(debug) {
         print(sortedList)
     }
-    print(paste("Highest value:",sortedList[0]))
+    print(paste("Highest value:",sortedList[1]))
     print(paste("Lowest value:",sortedList[length(sortedList)]))
     return(sortedList)
 }
@@ -222,6 +222,7 @@ print(paste("Debug Value:", debug))
 #=========================
 stats <- new("Statistics")
 stats@randomList <- round(runif(numberOfDigits,0,maxDigitValue), 0)
+print(stats@randomList)
 # calulated during the standard deviation calculation.
 # average(stats)
 mode(stats)
